@@ -12,6 +12,6 @@ spring-boot-kubernetes例子
 - docker load < spring-boot-kubernetes-1.0.0.tar   导入
 
 ### kubernetes
-- kubectl create -f deploy.yaml
-- kubectl expose deployment spring-boot-kubernetes --type="LoadBalancer"
-- minikube service spring-boot-kubernetes --url
+- kubectl apply -f  deploy.yaml
+- kubectl expose deployment spring-boot-kubernetes-deployment --type=NodePort
+- minikube service spring-boot-kubernetes-deployment --url
