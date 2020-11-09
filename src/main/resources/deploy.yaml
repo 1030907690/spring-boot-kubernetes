@@ -1,7 +1,7 @@
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
-  name: spring-boot-kubernetes-deployment
+  name: spring-boot-kubernetes
   labels:
     app: spring-boot-kubernetes
 spec:
