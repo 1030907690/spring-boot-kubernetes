@@ -7,6 +7,6 @@ spring-boot-kubernetes例子
 ### 导出tar包
 - docker save spring-boot-kubernetes:1.0.0 > spring-boot-kubernetes-1.0.0.tar
 
-### 导入tar包
-- eval $(minikube docker-env)
-- docker load < spring-boot-kubernetes-1.0.0.tar
+### 导入tar包 
+- eval $(minikube docker-env)  切换到minikube daemon
+- docker load < spring-boot-kubernetes-1.0.0.tar   导入
