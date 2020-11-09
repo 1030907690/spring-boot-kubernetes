@@ -15,3 +15,8 @@ spring-boot-kubernetes例子
 - kubectl apply -f  deploy.yaml
 - kubectl expose deployment spring-boot-kubernetes --type=NodePort
 - minikube service spring-boot-kubernetes --url
+
+
+### 参考
+- https://www.jianshu.com/p/592da53cdff0
+- https://www.jianshu.com/p/a9aec78418df
