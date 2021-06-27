@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Date;
 
 @RestController
 public class IndexController {
@@ -18,7 +19,7 @@ public class IndexController {
             e.printStackTrace();
         }
         String hostName = addr.getHostName();
-        System.out.println("Local host name: "+hostName);
+        System.out.println("Local host name: "+hostName +" date: "+ new Date());
         return "hostName:" +hostName;
     }
 }
