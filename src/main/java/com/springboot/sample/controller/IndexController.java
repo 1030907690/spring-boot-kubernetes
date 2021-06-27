@@ -20,6 +20,6 @@ public class IndexController {
         }
         String hostName = addr.getHostName();
         System.out.println("Local host name: "+hostName +" date: "+ new Date());
-        return "hostName:" +hostName;
+        return "Local host name: "+hostName +" date: "+ new Date();
     }
 }
