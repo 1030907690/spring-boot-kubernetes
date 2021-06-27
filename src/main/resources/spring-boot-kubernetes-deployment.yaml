@@ -1,0 +1,20 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: spring-boot-kubernetes-deployment
+spec:
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: spring-boot-kubernetes
+    spec:
+      containers:
+        - name: spring-boot-kubernetes
+          image: spring-boot-kubernetes:1.0.2
+          imagePullPolicy: Never # 只使用本地镜像，防止ErrImagePull异常
+          ports:
+            - containerPort: 8080
+          env: # 解决Java程序时区问题
+            - name: TZ
+              value: Asia/Shanghai
