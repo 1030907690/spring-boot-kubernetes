@@ -19,7 +19,7 @@ public class IndexController {
             e.printStackTrace();
         }
         String hostName = addr.getHostName();
-        System.out.println("Local host name: "+hostName +" date: "+ new Date());
-        return "Local host name: "+hostName +" date: "+ new Date();
+        System.out.println("Local host name(本地host名称): "+hostName +" date（时间）: "+ new Date());
+        return "Local host name(本地host名称): "+hostName +" date（时间）: "+ new Date();
     }
 }
