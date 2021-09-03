@@ -16,8 +16,9 @@ spec:
       containers:
         - name: login-deployment
           image: login:1.0.3
-          #java命令-Dfile.encoding=UTF-8不能放最后，否则无效  java -Dfile.encoding=UTF-8  -cp libs/*:login-1.0.0-SNAPSHOT.jar  com.lyh.app.video.login.LoginApplication
+          #java命令-Dfile.encoding=UTF-8不能放最后，否则无效
           # command 运行java命令必须是多个字符串，把命令写在前面，不然会报no such file or directory: unknown
+          # start.sh文件内容 java -Dfile.encoding=UTF-8  -cp libs/*:login-1.0.0-SNAPSHOT.jar  com.lyh.app.video.login.LoginApplication
           command: [  "/bin/sh","start.sh" ]
           imagePullPolicy: Never # 只使用本地镜像，防止ErrImagePull异常
           ports:
