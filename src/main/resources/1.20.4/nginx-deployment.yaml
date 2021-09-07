@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-deployment
+  template:
+    metadata:
+      labels:
+        app: nginx-deployment
+    spec:
+      volumes:
+        - name: logs-volume
+          hostPath:
+            path: /root/nginx/logs
+            type: DirectoryOrCreate  #目录存在就使用，不存在就先创建后使用
+        - name: conf-volume
+          hostPath:
+            path: /root/nginx/conf
+            type: DirectoryOrCreate  #目录存在就使用，不存在就先创建后使用
+      containers:
+        - name: nginx
+          image: nginx:1.7.9
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: logs-volume
+              mountPath: /var/log/nginx
+            - name: conf-volume
+              mountPath: /etc/nginx  # 容器里文件数据以宿主机为准，如果宿主机没有内容，那容器里也没有，容器会报找不到nginx.conf文件的错
