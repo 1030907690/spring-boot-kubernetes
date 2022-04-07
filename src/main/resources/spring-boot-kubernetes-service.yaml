@@ -4,7 +4,7 @@ metadata:
   name: spring-boot-kubernetes-nodeport
 spec:
   selector:
-    app: spring-boot-kubernetes
+    app: spring-boot-kubernetes-deployment
   ports:
     - name: http
       port: 9090 # 暴露出来访问的端口
