@@ -1,3 +1,7 @@
+# v1.0.4 
+- 支持同一个属性多次使用相同注解
+- 测试事务
+
 # spring-boot-kubernetes
 spring-boot-kubernetes例子
 
