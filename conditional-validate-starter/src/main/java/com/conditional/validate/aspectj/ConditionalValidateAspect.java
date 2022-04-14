@@ -1,11 +1,10 @@
-package com.springboot.sample.aspectj;
+package com.conditional.validate.aspectj;
 
-import com.springboot.sample.annotation.Annotations;
-import com.springboot.sample.annotation.ConditionalValidate;
-import com.springboot.sample.annotation.ConditionalValidateField;
-import com.springboot.sample.aspectj.action.ValidateHandle;
-import com.springboot.sample.aspectj.action.impl.IfEqNotNullHandleImpl;
-import com.springboot.sample.constant.ValidateFieldAction;
+import com.conditional.validate.annotation.ConditionalValidate;
+import com.conditional.validate.annotation.ConditionalValidateField;
+import com.conditional.validate.aspectj.action.ValidateHandle;
+import com.conditional.validate.aspectj.action.impl.IfEqNotNullHandleImpl;
+import com.conditional.validate.constant.ValidateFieldAction;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;

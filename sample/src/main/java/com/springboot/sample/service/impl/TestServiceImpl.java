@@ -1,6 +1,5 @@
 package com.springboot.sample.service.impl;
 
-import com.springboot.sample.annotation.ConditionalValidate;
 import com.springboot.sample.bean.Users;
 import com.springboot.sample.mapper.UsersMapper;
 import com.springboot.sample.service.TestExceptionService;

@@ -1,4 +1,4 @@
-package com.springboot.sample.annotation;
+package com.conditional.validate.annotation;
 
 import java.lang.annotation.*;
 

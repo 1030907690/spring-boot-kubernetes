@@ -1,20 +1,13 @@
 package com.springboot.sample.controller;
 
-import com.springboot.sample.annotation.ConditionalValidate;
-import com.springboot.sample.bean.Person;
+import com.conditional.validate.annotation.ConditionalValidate;
 import com.springboot.sample.bean.TestValidate;
 import com.springboot.sample.service.TestService;
-import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.beans.PropertyEditorSupport;
-import java.text.ParseException;
-import java.util.Date;
 
 @RestController
 @RequestMapping("/validate")

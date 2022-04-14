@@ -1,8 +1,8 @@
-package com.springboot.sample.aspectj.action.impl;
+package com.conditional.validate.aspectj.action.impl;
 
-import com.springboot.sample.annotation.ConditionalValidateField;
-import com.springboot.sample.aspectj.ConditionalValidateAspect;
-import com.springboot.sample.aspectj.action.ValidateHandle;
+import com.conditional.validate.annotation.ConditionalValidateField;
+import com.conditional.validate.aspectj.ConditionalValidateAspect;
+import com.conditional.validate.aspectj.action.ValidateHandle;
 import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.Expression;
 import org.springframework.expression.ExpressionParser;

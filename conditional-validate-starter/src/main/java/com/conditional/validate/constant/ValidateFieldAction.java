@@ -1,4 +1,4 @@
-package com.springboot.sample.constant;
+package com.conditional.validate.constant;
 
 public class ValidateFieldAction {
 

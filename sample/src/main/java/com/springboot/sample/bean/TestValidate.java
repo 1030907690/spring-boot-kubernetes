@@ -1,13 +1,11 @@
 package com.springboot.sample.bean;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.springboot.sample.annotation.ConditionalValidateField;
-import com.springboot.sample.constant.ValidateFieldAction;
+import com.conditional.validate.annotation.ConditionalValidateField;
+import com.conditional.validate.constant.ValidateFieldAction;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.xml.crypto.Data;
 import java.util.Date;
 
 public class TestValidate {
