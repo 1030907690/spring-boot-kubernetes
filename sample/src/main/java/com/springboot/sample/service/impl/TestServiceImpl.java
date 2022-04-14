@@ -27,7 +27,7 @@ public class TestServiceImpl implements TestService {
         usersMapper.insert(entity);
         System.out.println(entity.getId());
         try {
-            testExceptionService.test();
+//            testExceptionService.test();
         } catch (Exception e) {
             e.printStackTrace();
         }
