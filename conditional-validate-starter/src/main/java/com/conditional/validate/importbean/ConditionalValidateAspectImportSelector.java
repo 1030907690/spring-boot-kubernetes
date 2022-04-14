@@ -1,4 +1,4 @@
-package com.conditional.validate.importselector;
+package com.conditional.validate.importbean;
 
 import com.conditional.validate.aspectj.ConditionalValidateAspect;
 import com.conditional.validate.aspectj.action.impl.IfEqNotNullHandleImpl;
