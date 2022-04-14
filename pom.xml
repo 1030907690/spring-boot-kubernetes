@@ -70,7 +70,25 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-<!--参考  https://www.jianshu.com/p/98a141701cc7-->
+
+			<!-- 要将源码放上去，需要加入这个插件 -->
+			<plugin>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>3.0.0</version>
+				<configuration>
+					<attach>true</attach>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>compile</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!--参考  https://www.jianshu.com/p/98a141701cc7-->
 <!--Error creating blob: Git Repository is empty. (409)   仓库里随便创建下文件-->
 
 
@@ -97,7 +115,6 @@
 					<merge>true</merge>
 					<includes>
 						<include>**/*</include>
-
 					</includes>
 					<repositoryName>maven-repository</repositoryName><!--对应github上创建的仓库名称 name-->
 					<repositoryOwner>1030907690</repositoryOwner><!--github 仓库所有者-->
@@ -111,6 +128,8 @@
 					</execution>
 				</executions>
 			</plugin>
+
+
 
 		</plugins>
 	</build>
