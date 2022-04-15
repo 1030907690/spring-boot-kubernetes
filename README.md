@@ -24,7 +24,7 @@
 ```
    <dependencies>
       <dependency>
-            <groupId>com.springboot.sample</groupId>
+            <groupId>com.conditional.validate</groupId>
             <artifactId>conditional-validate-starter</artifactId>
             <version>0.0.1-SNAPSHOT</version>
       </dependency>
