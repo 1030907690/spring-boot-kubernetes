@@ -94,7 +94,8 @@ public class ConditionalValidateAspect implements InitializingBean {
 
     private void findAnnotationFieldAndClass(List<Field> allFields, Map<String, Class> fieldClzMap, List<ConditionalValidateFieldInfo> validateFieldList) {
         allFields.forEach(field -> {
-            Set<ConditionalValidateField> conditionalValidateFields = AnnotationUtils.getRepeatableAnnotations(field,ConditionalValidateField.class);
+           Set<ConditionalValidateField> conditionalValidateFields = AnnotationUtils.getRepeatableAnnotations(field,ConditionalValidateField.class);
+//            ConditionalValidateField [] conditionalValidateFields = field.getAnnotationsByType(ConditionalValidateField.class);
             String fieldName = field.getName();
             for (ConditionalValidateField conditionalValidateField : conditionalValidateFields) {
                 if (!StringUtils.isEmpty(conditionalValidateField)) {
