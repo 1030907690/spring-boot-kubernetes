@@ -13,10 +13,10 @@ import org.springframework.util.StringUtils;
 import java.util.Map;
 
 /*
-* 如果相等，判断是否为空
-* */
+ * 如果相等，判断是否为空
+ * */
 @Service
-public class IfEqNotNullHandleImpl implements ValidateHandle {
+public class IfEqNotNullHandleImpl extends AbstractHandleImpl implements ValidateHandle {
 
 
     @Override
@@ -26,12 +26,12 @@ public class IfEqNotNullHandleImpl implements ValidateHandle {
         Class originalClz = fieldClzMap.get(conditionalValidateFieldInfo.getFieldName());
         //TODO 只写了Integer类型的
         if (Integer.class.getSimpleName().equals(originalClz.getSimpleName())) {
-            Expression expression = parser.parseExpression("#" + paramsName[0] + "." + conditionalValidateFieldInfo.getFieldName());
+            Expression expression = parser.parseExpression(DEFAULT_SPEL_EXPRESSION_PREFIX + paramsName[0] + SPOT + conditionalValidateFieldInfo.getFieldName());
             Integer originalValue = expression.getValue(context, Integer.class);
             if (!StringUtils.isEmpty(conditionalValidateField.ifValue())) {
                 // 如果是相等的
                 if (Integer.valueOf(conditionalValidateField.ifValue()).equals(originalValue)) {
-                    Expression relationExpression = parser.parseExpression("#" + paramsName[0] + "." + conditionalValidateField.relationField());
+                    Expression relationExpression = parser.parseExpression(DEFAULT_SPEL_EXPRESSION_PREFIX + paramsName[0] + SPOT + conditionalValidateField.relationField());
                     String relationField = conditionalValidateField.relationField();
                     Object value = relationExpression.getValue(context, fieldClzMap.get(relationField));
                     Assert.isTrue(!StringUtils.isEmpty(value), conditionalValidateField.message());
@@ -39,7 +39,7 @@ public class IfEqNotNullHandleImpl implements ValidateHandle {
             } else {
                 // 为空的情况,有可能要求原字段为空，关联字段不能为空的情况；判断都是空就校验
                 if (StringUtils.isEmpty(conditionalValidateField.ifValue()) && StringUtils.isEmpty(originalValue)) {
-                    Expression relationExpression = parser.parseExpression("#" + paramsName[0] + "." + conditionalValidateField.relationField());
+                    Expression relationExpression = parser.parseExpression(DEFAULT_SPEL_EXPRESSION_PREFIX + paramsName[0] + SPOT + conditionalValidateField.relationField());
                     String relationField = conditionalValidateField.relationField();
                     Object value = relationExpression.getValue(context, fieldClzMap.get(relationField));
                     Assert.isTrue(!StringUtils.isEmpty(value), conditionalValidateField.message());
