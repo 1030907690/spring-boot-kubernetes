@@ -9,6 +9,8 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
@@ -18,16 +20,19 @@ import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Aspect
 //@Component
 public class ConditionalValidateAspect implements InitializingBean {
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     //将方法参数纳入Spring管理
     private final LocalVariableTableParameterNameDiscoverer discoverer = new LocalVariableTableParameterNameDiscoverer();
@@ -36,6 +41,9 @@ public class ConditionalValidateAspect implements InitializingBean {
     private final ExpressionParser parser = new SpelExpressionParser();
 
     private final Map<Integer, ValidateHandle> validateFieldActionHandleMapping = new HashMap<>();
+
+    /** 属性的缓存**/
+    private final Map<String,List<Field>> allFieldCache = new ConcurrentHashMap<>();
 
 
     @Resource
@@ -62,7 +70,7 @@ public class ConditionalValidateAspect implements InitializingBean {
 
         Object firstParams = args[0];
         if (!StringUtils.isEmpty(firstParams)) {
-            List<Field> allFields = getAllFields(firstParams);
+            List<Field> allFields = getAllFields(firstParams ,paramsName,method);
 
             // 把要校验的找到
             List<ConditionalValidateFieldInfo> validateFieldList = new ArrayList<>();
@@ -75,7 +83,7 @@ public class ConditionalValidateAspect implements InitializingBean {
             validateFieldList.forEach(conditionalValidateFieldInfo -> {
                 if (!StringUtils.isEmpty(conditionalValidateFieldInfo)) {
                     ConditionalValidateField conditionalValidateField = conditionalValidateFieldInfo.getConditionalValidateField();
-                    //TODO 这个地方可以使用策略模式优化下，共性的地方用模板方法
+                    // 这个地方可以使用策略模式优化下，共性的地方用模板方法
                     doValidate(conditionalValidateField,fieldClzMap, parser, conditionalValidateFieldInfo, context, paramsName);
                 }
             });
@@ -83,6 +91,18 @@ public class ConditionalValidateAspect implements InitializingBean {
         }
 
 
+    }
+
+    private List<Field> getAllFields(Object firstParams, String[] paramsName, Method method) {
+        List<Field> allFields = null;
+        String fieldCacheKey = method.toGenericString() + firstParams + paramsName[0];
+        if (!allFieldCache.containsKey(fieldCacheKey)) {
+            allFields = getAllFields(firstParams);
+        }else {
+            allFields = allFieldCache.get(fieldCacheKey);
+        }
+        Assert.isTrue(!CollectionUtils.isEmpty(allFields), paramsName[0]+"没有属性");
+        return allFields;
     }
 
     private void doValidate(ConditionalValidateField conditionalValidateField, Map<String, Class> fieldClzMap, ExpressionParser parser, ConditionalValidateFieldInfo conditionalValidateFieldInfo, EvaluationContext context, String[] paramsName) {
