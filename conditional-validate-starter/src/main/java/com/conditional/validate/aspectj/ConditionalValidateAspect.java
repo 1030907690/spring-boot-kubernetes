@@ -40,13 +40,15 @@ public class ConditionalValidateAspect implements InitializingBean {
 
     //解析spel表达式
     private final ExpressionParser parser = new SpelExpressionParser();
-
+    /** 处理类映射**/
     private final Map<Integer, ValidateHandle> validateFieldActionHandleMapping = new HashMap<>();
 
-    /**
-     * 属性的缓存
-     **/
-    private final Map<String, List<Field>> allFieldCache = new ConcurrentHashMap<>();
+   /***
+    * 缓存
+    * */
+    private final Map<String,List<ConditionalValidateFieldInfo>> validateFieldListCache = new ConcurrentHashMap<>();
+    // 字段类型缓存
+    private final Map<String,Map<String, Class>> fieldClzMapCache = new ConcurrentHashMap<>();
 
 
     @Resource
@@ -73,41 +75,35 @@ public class ConditionalValidateAspect implements InitializingBean {
 
         Object firstParams = args[0];
         if (!StringUtils.isEmpty(firstParams)) {
-            List<Field> allFields = getAllFields(firstParams, paramsName, method);
+            String cacheKey = firstParams.getClass().getName() + AbstractHandleImpl.SPOT + method.getName() + AbstractHandleImpl.SPOT + paramsName[0];
 
             // 把要校验的找到
             List<ConditionalValidateFieldInfo> validateFieldList = new ArrayList<>();
             // 字段类型
             Map<String, Class> fieldClzMap = new HashMap<>();
-            findAnnotationFieldAndClass(allFields, fieldClzMap, validateFieldList);
+            if (!validateFieldListCache.containsKey(cacheKey) && !fieldClzMapCache.containsKey(cacheKey)) {
+                List<Field> allFields = getAllFields(firstParams);
+                findAnnotationFieldAndClass(allFields, fieldClzMap, validateFieldList, cacheKey);
+            }else {
+                validateFieldList = validateFieldListCache.get(cacheKey);
+                fieldClzMap = fieldClzMapCache.get(cacheKey);
+            }
 
 
             // 执行校验动作，这块要分很多种情况处理
-            validateFieldList.forEach(conditionalValidateFieldInfo -> {
+            for (ConditionalValidateFieldInfo conditionalValidateFieldInfo : validateFieldList) {
                 if (!StringUtils.isEmpty(conditionalValidateFieldInfo)) {
                     ConditionalValidateField conditionalValidateField = conditionalValidateFieldInfo.getConditionalValidateField();
                     // 这个地方可以使用策略模式优化下，共性的地方用模板方法
                     doValidate(conditionalValidateField, fieldClzMap, parser, conditionalValidateFieldInfo, context, paramsName);
                 }
-            });
+            }
 
         }
 
 
     }
 
-    private List<Field> getAllFields(Object firstParams, String[] paramsName, Method method) {
-        List<Field> allFields = null;
-        String fieldCacheKey = firstParams.getClass().getName() + AbstractHandleImpl.SPOT + method.getName() + AbstractHandleImpl.SPOT + paramsName[0];
-        if (!allFieldCache.containsKey(fieldCacheKey)) {
-            allFields = getAllFields(firstParams);
-            allFieldCache.put(fieldCacheKey,allFields);
-        } else {
-            allFields = allFieldCache.get(fieldCacheKey);
-        }
-        Assert.isTrue(!CollectionUtils.isEmpty(allFields), paramsName[0] + "没有属性");
-        return allFields;
-    }
 
     private void doValidate(ConditionalValidateField conditionalValidateField, Map<String, Class> fieldClzMap, ExpressionParser parser, ConditionalValidateFieldInfo conditionalValidateFieldInfo, EvaluationContext context, String[] paramsName) {
         ValidateHandle validateHandle = validateFieldActionHandleMapping.get(conditionalValidateField.action());
@@ -116,7 +112,7 @@ public class ConditionalValidateAspect implements InitializingBean {
     }
 
 
-    private void findAnnotationFieldAndClass(List<Field> allFields, Map<String, Class> fieldClzMap, List<ConditionalValidateFieldInfo> validateFieldList) {
+    private void findAnnotationFieldAndClass(List<Field> allFields, Map<String, Class> fieldClzMap, List<ConditionalValidateFieldInfo> validateFieldList,String cacheKey) {
         allFields.forEach(field -> {
             Set<ConditionalValidateField> conditionalValidateFields = AnnotationUtils.getRepeatableAnnotations(field, ConditionalValidateField.class);
 //            ConditionalValidateField [] conditionalValidateFields = field.getAnnotationsByType(ConditionalValidateField.class);
@@ -128,6 +124,9 @@ public class ConditionalValidateAspect implements InitializingBean {
             }
             fieldClzMap.put(fieldName, field.getType());
         });
+
+        validateFieldListCache.put(cacheKey,validateFieldList);
+        fieldClzMapCache.put(cacheKey,fieldClzMap);
     }
 
     public static List<Field> getAllFields(Object object) {
