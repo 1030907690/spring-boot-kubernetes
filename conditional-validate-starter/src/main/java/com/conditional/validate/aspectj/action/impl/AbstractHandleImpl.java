@@ -4,5 +4,5 @@ public class AbstractHandleImpl {
 
     protected final String DEFAULT_SPEL_EXPRESSION_PREFIX = "#";
 
-    protected final String SPOT = ".";
+    public static final String SPOT = ".";
 }

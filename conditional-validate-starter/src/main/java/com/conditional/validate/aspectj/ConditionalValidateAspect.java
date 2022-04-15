@@ -3,6 +3,7 @@ package com.conditional.validate.aspectj;
 import com.conditional.validate.annotation.ConditionalValidate;
 import com.conditional.validate.annotation.ConditionalValidateField;
 import com.conditional.validate.aspectj.action.ValidateHandle;
+import com.conditional.validate.aspectj.action.impl.AbstractHandleImpl;
 import com.conditional.validate.aspectj.action.impl.IfEqNotNullHandleImpl;
 import com.conditional.validate.constant.ValidateFieldAction;
 import org.aspectj.lang.JoinPoint;
@@ -42,8 +43,10 @@ public class ConditionalValidateAspect implements InitializingBean {
 
     private final Map<Integer, ValidateHandle> validateFieldActionHandleMapping = new HashMap<>();
 
-    /** 属性的缓存**/
-    private final Map<String,List<Field>> allFieldCache = new ConcurrentHashMap<>();
+    /**
+     * 属性的缓存
+     **/
+    private final Map<String, List<Field>> allFieldCache = new ConcurrentHashMap<>();
 
 
     @Resource
@@ -70,7 +73,7 @@ public class ConditionalValidateAspect implements InitializingBean {
 
         Object firstParams = args[0];
         if (!StringUtils.isEmpty(firstParams)) {
-            List<Field> allFields = getAllFields(firstParams ,paramsName,method);
+            List<Field> allFields = getAllFields(firstParams, paramsName, method);
 
             // 把要校验的找到
             List<ConditionalValidateFieldInfo> validateFieldList = new ArrayList<>();
@@ -84,7 +87,7 @@ public class ConditionalValidateAspect implements InitializingBean {
                 if (!StringUtils.isEmpty(conditionalValidateFieldInfo)) {
                     ConditionalValidateField conditionalValidateField = conditionalValidateFieldInfo.getConditionalValidateField();
                     // 这个地方可以使用策略模式优化下，共性的地方用模板方法
-                    doValidate(conditionalValidateField,fieldClzMap, parser, conditionalValidateFieldInfo, context, paramsName);
+                    doValidate(conditionalValidateField, fieldClzMap, parser, conditionalValidateFieldInfo, context, paramsName);
                 }
             });
 
@@ -95,13 +98,14 @@ public class ConditionalValidateAspect implements InitializingBean {
 
     private List<Field> getAllFields(Object firstParams, String[] paramsName, Method method) {
         List<Field> allFields = null;
-        String fieldCacheKey = method.toGenericString() + firstParams + paramsName[0];
+        String fieldCacheKey = firstParams.getClass().getName() + AbstractHandleImpl.SPOT + method.getName() + AbstractHandleImpl.SPOT + paramsName[0];
         if (!allFieldCache.containsKey(fieldCacheKey)) {
             allFields = getAllFields(firstParams);
-        }else {
+            allFieldCache.put(fieldCacheKey,allFields);
+        } else {
             allFields = allFieldCache.get(fieldCacheKey);
         }
-        Assert.isTrue(!CollectionUtils.isEmpty(allFields), paramsName[0]+"没有属性");
+        Assert.isTrue(!CollectionUtils.isEmpty(allFields), paramsName[0] + "没有属性");
         return allFields;
     }
 
@@ -114,7 +118,7 @@ public class ConditionalValidateAspect implements InitializingBean {
 
     private void findAnnotationFieldAndClass(List<Field> allFields, Map<String, Class> fieldClzMap, List<ConditionalValidateFieldInfo> validateFieldList) {
         allFields.forEach(field -> {
-           Set<ConditionalValidateField> conditionalValidateFields = AnnotationUtils.getRepeatableAnnotations(field,ConditionalValidateField.class);
+            Set<ConditionalValidateField> conditionalValidateFields = AnnotationUtils.getRepeatableAnnotations(field, ConditionalValidateField.class);
 //            ConditionalValidateField [] conditionalValidateFields = field.getAnnotationsByType(ConditionalValidateField.class);
             String fieldName = field.getName();
             for (ConditionalValidateField conditionalValidateField : conditionalValidateFields) {
