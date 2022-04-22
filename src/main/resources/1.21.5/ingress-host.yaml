@@ -1,0 +1,19 @@
+#Ingress域名访问某个服务的测试
+# 用kubesphere要先开启网关  集群设置->网关设置，否则没有网关地址
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-host
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: "www.test.com"
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"  # 把请求会转给下面的服务，下面的服务一定要能处理这个路径，不能处理就是404
+            backend:
+              service:
+                name: nginx-service  # java，比如使用路径重写，去掉前缀nginx
+                port:
+                  number: 80
