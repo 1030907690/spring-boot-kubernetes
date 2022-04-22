@@ -1,5 +1,6 @@
 # wget -c https://raw.githubusercontent.com/1030907690/public-script/master/docker/redis.conf
-# kubectl create cm redis-conf --from-file=redis.conf
+# 从本地文件创建ConfigMap kubectl create cm redis-conf --from-file=redis.conf
+# 修改 kubectl edit cm redis-conf
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
