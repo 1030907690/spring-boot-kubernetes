@@ -1,7 +1,7 @@
 package com.springboot.sample.controller;
 
-import com.springboot.sample.bean.RedisQueueMessage;
-import com.springboot.sample.redis.DelayingQueueService;
+import com.redis.queue.bean.redis.RedisQueueMessage;
+import com.redis.queue.core.DelayingQueueService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -40,7 +40,7 @@ public class RedisController {
                 redisQueueMessage.setBody(msg);
                 redisQueueMessage.setId(seqId);
                 redisQueueMessage.setBeanName(beanName);
-                delayingQueueService.push(redisQueueMessage);
+                delayingQueueService.enqueue(redisQueueMessage);
             }
         } catch (Exception e) {
             e.printStackTrace();

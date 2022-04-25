@@ -7,7 +7,7 @@ spring:
     port: 6379
     # redis有16个库 默认选择第0个使用
     database: 0
-    password: root
+    password:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver

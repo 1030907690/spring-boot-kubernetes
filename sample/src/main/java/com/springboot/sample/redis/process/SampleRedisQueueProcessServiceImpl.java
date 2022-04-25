@@ -1,18 +1,17 @@
 package com.springboot.sample.redis.process;
 
-import com.springboot.sample.bean.RedisQueueMessage;
-import com.springboot.sample.bean.RedisQueueProcessResp;
+import com.redis.queue.bean.redis.RedisQueueMessage;
+import com.redis.queue.bean.redis.RedisQueueProcessResp;
+import com.redis.queue.service.RedisQueueProcessService;
+import com.redis.queue.service.impl.AbstractRedisQueueProcessServiceImpl;
 import com.springboot.sample.bean.Users;
 import com.springboot.sample.mapper.UsersMapper;
-import com.springboot.sample.redis.process.impl.AbstractRedisQueueProcessServiceImpl;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
 @Service
-public class SampleRedisQueueProcessServiceImpl extends AbstractRedisQueueProcessServiceImpl  {
+public class SampleRedisQueueProcessServiceImpl  extends AbstractRedisQueueProcessServiceImpl{
 
     @Resource
     private UsersMapper usersMapper;
@@ -29,4 +28,5 @@ public class SampleRedisQueueProcessServiceImpl extends AbstractRedisQueueProces
         }
         return RedisQueueProcessResp.success();
     }
+
 }

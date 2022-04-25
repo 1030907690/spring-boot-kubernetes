@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.redis.queue.core.DelayingQueueService,\
+com.redis.queue.api.RedisPushQueue

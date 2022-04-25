@@ -12,7 +12,8 @@
 
 	<modules>
 		<module>sample</module>
-		<module>redis-protocol</module>
+<!--		<module>redis-protocol</module>-->
+		<module>redis-queue-protocol-starter</module>
 		<module>conditional-validate-starter</module>
 	</modules>
 
