@@ -1,12 +1,14 @@
-# 把jar包打到centos里的办法
-# 从本地文件创建ConfigMap kubectl create cm spring-boot-kubernetes-conf --from-file=application.yml
-# 修改 kubectl edit cm spring-boot-kubernetes-conf  ，也可以先删除 kubectl delete cm spring-boot-kubernetes-conf 再从本地文件创建
+# 参考 https://www.jianshu.com/p/c63c9efaeac3
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: spring-boot-kubernetes-deployment
 spec:
   replicas: 2
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
   selector:
     matchLabels:
       app: spring-boot-kubernetes-deployment
@@ -22,6 +24,14 @@ spec:
           imagePullPolicy: Never # 只使用本地镜像，防止ErrImagePull异常
           ports:
             - containerPort: 8080
+          readinessProbe: #就绪探针
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 10 #容器启动后要等待多少秒后才启动存活和就绪探测器， 默认是 0 秒，最小值是 0
+            periodSeconds: 5  # 指定了 kubelet 应该每 5 秒执行一次存活探测。
+            successThreshold: 1 #探测器在失败后，被视为成功的最小连续成功数。默认值是 1。 存活和启动探测的这个值必须是 1。最小值是 1。
+            failureThreshold: 2 #当探测失败时，Kubernetes 的重试次数。 对存活探测而言，放弃就意味着重新启动容器。 对就绪探测而言，放弃意味着 Pod 会被打上未就绪的标签。默认值是 3。最小值是 1
           env: # 解决Java程序时区问题
             - name: TZ
               value: Asia/Shanghai
@@ -31,7 +41,7 @@ spec:
           lifecycle:
             preStop:
               exec:
-                command: ["/bin/sh","-c","sleep 5"]
+                command: ["/bin/sh","-c","echo this pod is stopping. > /stop.log && sleep 20s",]
       volumes:
         - name: config
           configMap:
