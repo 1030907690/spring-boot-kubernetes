@@ -17,6 +17,7 @@ spec:
       labels:
         app: spring-boot-kubernetes-deployment
     spec:
+      terminationGracePeriodSeconds: 900 #如果需要的优雅终止时间比较长 (preStop + 业务进程停止可能超过 30s)，可根据实际情况自定义 terminationGracePeriodSeconds，避免过早的被 SIGKILL杀死,与下面preStop有关联，900属于总时间
       containers:
         - name: spring-boot-kubernetes
           image: a1030907690/centos_java:7.7.1908
