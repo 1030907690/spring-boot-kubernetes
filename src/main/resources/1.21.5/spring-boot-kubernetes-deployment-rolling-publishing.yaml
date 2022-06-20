@@ -1,0 +1,41 @@
+# 把jar包打到centos里的办法
+# 从本地文件创建ConfigMap kubectl create cm spring-boot-kubernetes-conf --from-file=application.yml
+# 修改 kubectl edit cm spring-boot-kubernetes-conf  ，也可以先删除 kubectl delete cm spring-boot-kubernetes-conf 再从本地文件创建
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-boot-kubernetes-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: spring-boot-kubernetes-deployment
+  template:
+    metadata:
+      labels:
+        app: spring-boot-kubernetes-deployment
+    spec:
+      containers:
+        - name: spring-boot-kubernetes
+          image: a1030907690/centos_java:7.7.1908
+          command: [ "java","-jar","spring-boot-kubernetes-0.0.1-SNAPSHOT.jar" ]
+          imagePullPolicy: Never # 只使用本地镜像，防止ErrImagePull异常
+          ports:
+            - containerPort: 8080
+          env: # 解决Java程序时区问题
+            - name: TZ
+              value: Asia/Shanghai
+          volumeMounts:
+            - name: config
+              mountPath: /config  # 应用配置文件路径
+          lifecycle:
+            preStop:
+              exec:
+                command: ["/bin/sh","-c","sleep 5"]
+      volumes:
+        - name: config
+          configMap:
+            name: spring-boot-kubernetes-conf  # 这个名字与创建时对应
+            items:
+              - key: application.yml
+                path: application.yml

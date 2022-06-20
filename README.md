@@ -4,23 +4,23 @@ spring-boot-kubernetes例子
 ## 滚动更新
 ` 
 
-# 更新 spring-boot-kubernetes=a1030907690/centos_java:7.7.1909,其中spring-boot-kubernetes是 image旁边的name值
+### 更新 spring-boot-kubernetes=a1030907690/centos_java:7.7.1909,其中spring-boot-kubernetes是 image旁边的name值
 kubectl set image  deployment/spring-boot-kubernetes-deployment  spring-boot-kubernetes=a1030907690/centos_java:7.7.1909 --record
 
-# 查看滚动更新状态
+### 查看滚动更新状态
 kubectl rollout status deployment/spring-boot-kubernetes-deployment
 
-#历史记录
+###历史记录
 kubectl rollout history  deployment/spring-boot-kubernetes-deployment
 
 
-#查看某个历史详情
+###查看某个历史详情
 kubectl rollout history  deployment/spring-boot-kubernetes-deployment --revision=2
 
-#回滚(回到上次)
+###回滚(回到上次)
 kubectl rollout undo  deployment/spring-boot-kubernetes-deployment
 
-#回滚(回到指定版本)
+###回滚(回到指定版本)
 kubectl rollout undo deployment/spring-boot-kubernetes-deployment --to-revision=2
 
 `
