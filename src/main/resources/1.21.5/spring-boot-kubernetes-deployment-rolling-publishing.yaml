@@ -41,7 +41,7 @@ spec:
           lifecycle:
             preStop:
               exec:
-                command: ["/bin/sh","-c","echo this pod is stopping. > /stop.log && sleep 20s",]
+                command: ["/bin/sh","-c","echo this pod is stopping. > /stop.log && sleep 90s"]
       volumes:
         - name: config
           configMap:
