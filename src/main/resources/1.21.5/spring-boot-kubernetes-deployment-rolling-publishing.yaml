@@ -28,7 +28,7 @@ spec:
             httpGet:
               path: /
               port: 8080
-            initialDelaySeconds: 10 #容器启动后要等待多少秒后才启动存活和就绪探测器， 默认是 0 秒，最小值是 0
+            initialDelaySeconds: 50 #容器启动后要等待多少秒后才启动存活和就绪探测器， 默认是 0 秒，最小值是 0
             periodSeconds: 5  # 指定了 kubelet 应该每 5 秒执行一次存活探测。
             successThreshold: 1 #探测器在失败后，被视为成功的最小连续成功数。默认值是 1。 存活和启动探测的这个值必须是 1。最小值是 1。
             failureThreshold: 2 #当探测失败时，Kubernetes 的重试次数。 对存活探测而言，放弃就意味着重新启动容器。 对就绪探测而言，放弃意味着 Pod 会被打上未就绪的标签。默认值是 3。最小值是 1
