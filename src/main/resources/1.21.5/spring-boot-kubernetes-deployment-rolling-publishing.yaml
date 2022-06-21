@@ -7,8 +7,8 @@ spec:
   replicas: 2
   strategy:
     rollingUpdate:
-      maxSurge: 1
-      maxUnavailable: 0
+      maxSurge: 1 # 最大峰值用来指定可以创建的超出期望 Pod 个数的 Pod 数量。此值可以是绝对数（例如，5）或所需 Pods 的百分比（例如，10%）
+      maxUnavailable: 0 #最大不可用  是一个可选字段，用来指定 更新过程中不可用的 Pod 的个数上限。该值可以是绝对数字（例如，5）也可以是所需 Pods 的百分比（例如，10%）
   selector:
     matchLabels:
       app: spring-boot-kubernetes-deployment
