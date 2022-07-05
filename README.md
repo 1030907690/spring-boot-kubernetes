@@ -1,6 +1,17 @@
 # spring-boot-kubernetes
 spring-boot-kubernetes例子
 
+
+## v1.0.2
+- kubernetes SDK小例子
+
+## v1.0.1 
+- 支持同一个属性多次使用相同注解
+- 测试事务
+
+## v0.0.1
+- master备份
+
 ## 滚动更新
 ` 
 
