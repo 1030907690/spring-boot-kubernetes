@@ -1,6 +1,8 @@
 # spring-boot-kubernetes
 spring-boot-kubernetes例子
 
+## v1.0.2 kubernetes SDK
+
 ## 滚动更新
 ` 
 

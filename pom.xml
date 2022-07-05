@@ -21,6 +21,14 @@
 
 	<dependencies>
 
+
+		<!--解决 kotlin.collections.ArraysKt.copyInto([B[BIII)[B] with root cause-->
+		<dependency>
+			<groupId>org.jetbrains.kotlin</groupId>
+			<artifactId>kotlin-stdlib</artifactId>
+			<version>1.3.70</version>
+		</dependency>
+
 		<dependency>
 			<groupId>io.kubernetes</groupId>
 			<artifactId>client-java</artifactId>
