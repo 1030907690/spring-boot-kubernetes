@@ -50,3 +50,4 @@ kubectl rollout undo deployment/spring-boot-kubernetes-deployment --to-revision=
 ### 参考
 - https://www.jianshu.com/p/592da53cdff0
 - https://www.jianshu.com/p/a9aec78418df
+
