@@ -13,7 +13,7 @@ import java.io.IOException;
  * @date 2022/7/5 14:21
  */
 @RestController
-public class CubernetesController {
+public class KubernetesController {
 
     @RequestMapping("/getAllService")
     public String getAllService() {
