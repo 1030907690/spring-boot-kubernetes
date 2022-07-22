@@ -25,7 +25,6 @@ pipeline {
             sh 'echo tag  ${BUILD_TAG}'
             sh 'cp src/main/resources/Dockerfile target'
             sh 'cd target && docker build -t spring-boot-kubernetes:${BUILD_TAG} .'
-            sh 'kubectl set image  deployment/spring-boot-kubernetes-deployment  spring-boot-kubernetes=spring-boot-kubernetes:${BUILD_TAG} --record'
         
       
           }
